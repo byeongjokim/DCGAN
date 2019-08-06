@@ -34,6 +34,7 @@ def train(args):
     face_dataset = Celeba_Dataset(imgfolder=args.data_folder,
                                   transforms=transforms.Compose([
                                       transforms.Resize(args.image_size),
+                                      transforms.CenterCrop(args.image_size),
                                       transforms.ToTensor(),
                                       transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
                                   ]))
@@ -42,28 +43,45 @@ def train(args):
                               batch_size=args.batch_size,
                               shuffle=True,
                               num_workers=args.workers)
-    real_label = 1
-    fake_label = 0
+
     for epoch in range(args.epoch):
+        D_losses = []
+        G_losses = []
         for i, data in enumerate(train_loader):
 
             netD.zero_grad()
-            print(data.shape)
-            real_cpu = data.to(device)
-            print(real_cpu.shape)
-            b_size = real_cpu.size(0)
-            print(b_size)
-            label = torch.full((b_size, ), real_label, device=device)
-            print(label.shape)
-            output = netD(real_cpu).view(-1)
-            print(output.shape)
+            real_img = data.to(device)
+            print(real_img.shape)
+            b_size = real_img.size(0)
+            real_label = torch.ones((b_size), device=device)
+            real_output = netD(real_img).view(-1)
+            errD_real = criterion(real_output, real_label)
+            errD_real.backward()
+
+            noise = torch.randn(b_size, args.length_z, 1, 1, device=device)
+            print(noise.shape)
+            fake_img = netG(noise)
+            fake_label = torch.zeros((b_size), device=device)
+            fake_output = netD(fake_img.detach()).view(-1)
+            errD_fake = criterion(fake_output, fake_label)
+            errD_fake.backward()
+
+            errD = errD_real + errD_fake
+            optimizerD.step()
+
+            netG.zero_grad()
+            output = netD(fake_img).view(-1)
+            errG = criterion(output, real_label)
+            errG.backward()
+            optimizerG.step()
+
+            D_losses.append(errD.item())
+            G_losses.append(errG.item())
+
+            
             break
+        print()
         break
-
-
-
-
-
 
 
 def test(args):
