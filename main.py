@@ -116,8 +116,7 @@ if __name__ == '__main__':
     parser.add_argument('--opt', type=str, default="test")
 
     # data setting
-    parser.add_argument('--data_folder', type=str, default='../_data/img_align_celeba/')
-    parser.add_argument('--val_data', type=str, default='../_data/img_align_celeba/')
+    parser.add_argument('--data_folder', type=str, default='./_data/img_align_celeba/')
     parser.add_argument('--image_size', type=int, nargs='+', default=64)
 
     # ckpt setting
