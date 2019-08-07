@@ -106,8 +106,17 @@ def train(args):
             }, args.checkpoint_path + str(epoch) + "_checkpoint.pth.tar")
 
 def test(args):
-    return 1
+    checkpoint = torch.load(args.checkpoint)
 
+    device = torch.device("cuda:0" if (torch.cuda.is_available() and args.ngpu > 0) else "cpu")
+    netG = Generator(args)
+    netG.load_state_dict(checkpoint['Generator_state_dict'])
+    netG = netG.to(device)
+
+    fixed_noise = torch.randn(args.save_img, args.length_z, 1, 1, device=device)
+    fake_img = netG(fixed_noise)
+    for img_no in range(args.save_img):
+        vutils.save_image(fake_img[img_no], args.save_img_folder + str(img_no) + ".jpg")
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -122,6 +131,7 @@ if __name__ == '__main__':
     # ckpt setting
     parser.add_argument('--save_checkpoint_interval', type=int, default=2)
     parser.add_argument('--checkpoint_path', type=str, default="./_model/")
+    parser.add_argument('--checkpoint', type=str, default="./_model/checkpoint.pth.tar")
 
     # network setting
     parser.add_argument('--length_z', type=int, default=100)
@@ -133,7 +143,7 @@ if __name__ == '__main__':
     parser.add_argument('--lrD', type=float, default=0.0002)
     parser.add_argument('--beta1', type=float, default=0.5)
     parser.add_argument('--workers', type=int, default=2)
-    parser.add_argument('--save_img', type=int, default=2)
+    parser.add_argument('--save_img', type=int, default=10)
     parser.add_argument('--save_img_folder', type=str, default="./_output/")
 
     # gpu setting
