@@ -33,7 +33,7 @@ You can download the checkpoint file for four epoch in [here](https://drive.goog
 <tr>
 <td align="center"><img src="https://github.com/byeongjokim/DCGAN/blob/master/result/0_0_0.jpg?raw=true" alt="" /></td>
 <td align="center"><img src="https://github.com/byeongjokim/DCGAN/blob/master/result/0_200_0.jpg?raw=true" alt="" /></td>
-<td align="center"><img src="https://github.com/byeongjokim/DCGAN/blob/master/result/0_40_0.jpg?raw=true" alt="" /></td>
+<td align="center"><img src="https://github.com/byeongjokim/DCGAN/blob/master/result/0_400_0.jpg?raw=true" alt="" /></td>
 <td align="center"><img src="https://github.com/byeongjokim/DCGAN/blob/master/result/0_600_0.jpg?raw=true" alt="" /></td>
 <td align="center"><img src="https://github.com/byeongjokim/DCGAN/blob/master/result/0_800_0.jpg?raw=true" alt="" /></td>
 </tr>
