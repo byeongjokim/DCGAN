@@ -2,3 +2,4 @@
 **/_output
 **/__pycache__
 **/_model
+*.pyc
