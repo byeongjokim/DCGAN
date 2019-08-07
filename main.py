@@ -88,7 +88,7 @@ def train(args):
                 with torch.no_grad():
                     fake_img = netG(fixed_noise)
                     for img_no in range(args.save_img):
-                        vutils.save_image(fake_img[img_no], "./output/" + str(epoch) + "_" + str(i) + "_" + str(img_no) + ".jpg")
+                        vutils.save_image(fake_img[img_no], args.save_img_folder + str(epoch) + "_" + str(i) + "_" + str(img_no) + ".jpg")
 
         print(str(epoch) + " epoch\n")
         print("\tD loss: " + str(np.mean(np.array(D_losses))))
@@ -97,7 +97,7 @@ def train(args):
         with torch.no_grad():
             fake_img = netG(fixed_noise)
             for img_no in range(args.save_img):
-                vutils.save_image(fake_img[img_no], "./output/"+str(epoch)+"_"+str(img_no)+".jpg")
+                vutils.save_image(fake_img[img_no], args.save_img_folder + str(epoch) + "_fin_" + str(img_no) + ".jpg")
 
         if(epoch % args.save_checkpoint_interval == 0):
             torch.save({
@@ -134,6 +134,7 @@ if __name__ == '__main__':
     parser.add_argument('--beta1', type=float, default=0.5)
     parser.add_argument('--workers', type=int, default=2)
     parser.add_argument('--save_img', type=int, default=2)
+    parser.add_argument('--save_img_folder', type=str, default="./_output/")
 
     # gpu setting
     parser.add_argument('--ngpu', type=int, default=1)
